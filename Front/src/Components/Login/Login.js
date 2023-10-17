@@ -1,15 +1,20 @@
-import Services from '../Services/Service';
+import { useNavigate } from 'react-router-dom';
+import authentificationService from '../Services/authentificationService';
 import './../../Assets/css/main.css';
 
 function Login() {
+  const authentification = authentificationService();
+  const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-       const email = event.target.username.value
-       const password = event.target.password.value
-       console.log(email, password)
-       console.log(Services(email, password))
-    };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const email = event.target.username.value;
+    const password = event.target.password.value;
+    const { error } = await authentification.login(email, password);
+    if (error === false) {
+      navigate('/profile');
+    }
+  };
 
   return (
     <main className="main bg-dark">
@@ -19,11 +24,11 @@ function Login() {
         <form onSubmit={handleSubmit}>
           <div className="input-wrapper">
             <label htmlFor="username">Username</label>
-            <input name ="username" type="text" id="username" />
+            <input name="username" type="text" id="username" />
           </div>
           <div className="input-wrapper">
             <label htmlFor="password">Password</label>
-            <input name ="password" type="password" id="password" />
+            <input name="password" type="password" id="password" />
           </div>
           <div className="input-remember">
             <input type="checkbox" id="remember-me" />
@@ -32,7 +37,9 @@ function Login() {
           {/* <a href="./user.html" className="sign-in-button">
             Sign In
           </a> */}
-          <button className="sign-in-button" type='submit'>Sign in</button>
+          <button className="sign-in-button" type="submit">
+            Sign in
+          </button>
         </form>
       </section>
     </main>
