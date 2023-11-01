@@ -2,12 +2,22 @@ import { useNavigate } from 'react-router-dom';
 import authentificationService from '../Services/authentificationService';
 import './../../Assets/css/main.css';
 import './Login.css';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { save } from './../../features/userSlice';
+import { useDispatch } from 'react-redux';
 
 function Login() {
   const authentification = authentificationService();
   const navigate = useNavigate();
   const referror = useRef()
+  const dispatch = useDispatch();
+  const [logged, setLogged] = useState();
+
+  useEffect(() => {
+    if(logged === true){
+      navigate('/profile');
+    }
+  },[logged, navigate])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -15,8 +25,10 @@ function Login() {
     const password = event.target.password.value;
     const { error } = await authentification.login(email, password);
     if (error === false) {
+      const user = await authentification.getUser()
+       await dispatch(save(user))
       referror.current.style.display = 'none';
-      navigate('/profile');
+      setLogged(true);
     }else{
       referror.current.style.display = 'block';
     }

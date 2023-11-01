@@ -9,7 +9,6 @@ export const userSlice = createSlice({
         save: (state, action) => {
             const {payload} = action
             state.user = payload;
-            console.log(state.user)
         }
     },
 });
