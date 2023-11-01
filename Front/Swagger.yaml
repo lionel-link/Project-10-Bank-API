@@ -19,28 +19,23 @@ paths:
       description: add an existing transaction by Id
       parameters:
         - in: header
-        name: Authorization
-        description: Attach Bearer JWT token
-        required: true
-        - in: body
-        name: body
-        description: transaction Payload
-        required: true
-        schema:
-         $ref: '#/definitions/Login'
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: string
       produces:
         - application/json
       responses:
-         '200':
-         description: add Successfully
-         schema:
-            $ref: '#/definitions/AddResponse'
-          '400':
-            description: Invalid Fields
-          '500':
-            description: Internal Server Error
-  /user/transactions?current_month=true&group_by=account:
-    get:
+        '200':
+          description: add Successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/transactions/current_month=true&group_by=account:
+    get: 
       security:
         - Bearer: []
       tags:
@@ -52,12 +47,15 @@ paths:
           name: Authorization
           description: Attach Bearer JWT token
           required: true
-        - in: body
-          name: body
+          type: string
+        - in: query
+          name: current_month
+          type: integer
           description: current month
-          required: true
-          schema:
-            $ref: '#/definitions/User'
+        - in: query
+          name: group_by
+          type: boolean
+          description: group the transaction by account
       produces:
         - application/json
       responses:
@@ -81,13 +79,13 @@ paths:
         - in: header
           name: Authorization
           description: Attach Bearer JWT token
+          type: string
           required: true
-        - in: body
-          name: body
+        - in: path
+          name: id
+          type: integer
           description: Update user profile attributes
           required: true
-          schema:
-            $ref: '#/definitions/UserProfile'
       produces:
         - application/json
       responses:
@@ -110,13 +108,13 @@ paths:
         - in: header
           name: Authorization
           description: Attach Bearer JWT token
+          type: string
           required: true
-        - in: body
-          name: body
+        - in: path
+          name: id
+          type: integer
           description: Update user profile attributes
           required: true
-          schema:
-            $ref: '#/definitions/UserProfile'
       produces:
         - application/json
       responses:
@@ -139,13 +137,13 @@ paths:
         - in: header
           name: Authorization
           description: Attach Bearer JWT token
+          type: string
           required: true
-        - in: body
-          name: body
+        - in: path
+          name: id
+          type: integer
           description: Update user profile attributes
           required: true
-          schema:
-            $ref: '#/definitions/UserProfile'
       produces:
         - application/json
       responses:
@@ -158,34 +156,13 @@ paths:
         '500':
           description: Internal Server Error
 
+
 securityDefinitions:
   Bearer:
     type: apiKey
     name: Authorization
     in: header
 definitions:
-  User:
-    properties:
-      email:
-        type: string
-        description: user email
-      password:
-        type: string
-        description: user password
-      firstName:
-        type: string
-        description: user first name
-      lastName:
-        type: string
-        description: user last name
-  Login:
-    properties:
-      email:
-        type: string
-        description: user email
-      password:
-        type: string
-        description: user password
   ApiResponse:
     type: object
     properties:
@@ -200,15 +177,3 @@ definitions:
             type: string
           email:
             type: string
-  LoginResponse:
-    type: object
-    properties:
-      token:
-        type: string
-  UserProfile:
-    type: object
-    properties:
-      firstName:
-        type: string
-      lastName:
-        type: string
