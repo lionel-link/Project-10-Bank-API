@@ -257,6 +257,11 @@ body {
   color: #fff;
   font-weight: bold;
   padding: 10px;
+  text-decoration: none;
+}
+
+.form-container {
+  padding:  10px 50px 50px 50px;
 }
 
 .header {

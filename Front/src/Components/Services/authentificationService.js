@@ -1,6 +1,12 @@
+import { save } from './../../features/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
+
 const URL = "http://localhost:3001/api/v1/"
 
 export default function authentificationService () {
+
+  const dispatch = useDispatch();
 
   async function login(email, password) {
     const data = { email: email, password: password };
@@ -19,7 +25,7 @@ export default function authentificationService () {
     const {status, body} = await response.json();
     if(status === 200) {
       localStorage.setItem('token', body.token)
-      return {error:false, token:body.token};
+      return {error:false};
     }else{
       return {error:true};
     }
@@ -71,6 +77,9 @@ export default function authentificationService () {
   function logOut() {
     localStorage.setItem('token', "")
     return "token is set"
+    const user = {}
+    dispatch(save(user));
+    
   }
 
   return {login, logOut, getUser, updateUser}
